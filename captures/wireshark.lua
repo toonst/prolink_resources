@@ -63,7 +63,7 @@ function djmproto0.dissector(buffer, pinfo, tree)
 	subtree:add(buffer(0x0b, 1), string.format("Query channel from mixer: %s", tostring(buffer(0x0b, 1)) ))
 	subtree:add(buffer(0x0c, 20), "Device name: "..buffer(0x0c, 20):stringz())
 	local channel = buffer(0x20, 2):uint()
-	subtree:add(buffer(0x20, 2), string.format("x20: %04x (0101 from DJM, 0102 from CDJ, 0103 from Rekordbox)", channel))
+	subtree:add(buffer(0x20, 2), string.format("Device Type: %04x (0101 from DJM, 0102 from CDJ, 0103 from Rekordbox)", channel))
 	subtree:add(buffer(0x22, 2), string.format("Length: %d (%s)", buffer(0x22, 2):uint(), (buffer(0x22, 2):uint()==buffer:len() and 'good' or 'bad') ) )
 
 	if typ==0x00 then
@@ -126,7 +126,7 @@ function djmproto0.dissector(buffer, pinfo, tree)
 		--0010   32 30 30 30 6e 65 78 75 73 00 00 00 00 00 00 00
 		--0020   01 02 00 36 03 01 74 5e 1c 35 f3 9f c0 a8 00 5d
 		--0030   03 00 00 00 01 00
-		
+
 		subtree:add(buffer(0x24, 1), string.format("Channel: x%02x", buffer(0x24, 1):uint()))
 		-- CDJ booting up with one mixer on the network with 02(manual) configuration sends x01
 		subtree:add(buffer(0x25, 1), string.format("x25: %x [device ID?]", buffer(0x25, 1):uint()))
@@ -172,7 +172,7 @@ function djmproto1.dissector(buffer, pinfo, tree)
 	subtree:add(buffer(0x0b, 20), "Device name: "..buffer(0x0b, 20):stringz())
 	subtree:add(buffer(0x1f, 1), string.format("x1f: %02x", buffer(0x1f, 1):uint()) )
 	-- This isn't quite right, some setting on the CDJ is now making this output 0x03
-	subtree:add(buffer(0x20, 1), string.format("x20: %02x (1 from Rekordbox, 0 otherwise?)", buffer(0x20, 1):uint()))
+	subtree:add(buffer(0x20, 1), string.format("Device Type: %02x (1 from Rekordbox, 0 otherwise?)", buffer(0x20, 1):uint()))
 	local channel = buffer(0x21, 1):uint()
 	subtree:add(buffer(0x21, 1), string.format("Channel: x%02x", channel))
 	local lengthGood = (0x22+0x02+buffer(0x22, 2):uint() == buffer:len()) and 'good' or 'bad'
@@ -276,7 +276,7 @@ function djmproto2.dissector(buffer, pinfo, tree)
 	subtree:add(buffer(0x0b, 20), "Device name: "..buffer(0x0b, 20):stringz())
 
 	subtree:add(buffer(0x1f, 1), string.format("x1f: %02x [always x01?]", buffer(0x1f, 1):uint()) )
-	subtree:add(buffer(0x20, 1), string.format("x20: %02x [1 from Rekordbox, 0 otherwise?]", buffer(0x20, 1):uint()))
+	subtree:add(buffer(0x20, 1), string.format("Device Type: %02x [1 from Rekordbox, 0 otherwise?]", buffer(0x20, 1):uint()))
 	local channel = buffer(0x21, 1):uint()
 	subtree:add(buffer(0x21, 1), string.format("Channel: %02x", channel))
 	local lengthGood = (0x22+0x02+buffer(0x22, 2):uint() == buffer:len()) and 'good' or 'bad'
@@ -557,7 +557,7 @@ function djmproto4.dissector(buffer, pinfo, tree)
 	subtree:add(buffer(0x0b, 20), "Device name: "..buffer(0x0b, 20):stringz())
 
 	subtree:add(buffer(0x1f, 1), string.format("x1f: %02x [always x01?]", buffer(0x1f, 1):uint()) )
-	subtree:add(buffer(0x20, 1), string.format("x20: %02x [1 from Rekordbox, 0 otherwise?]", buffer(0x20, 1):uint()))
+	subtree:add(buffer(0x20, 1), string.format("Device Type: %02x [1 from Rekordbox, 0 otherwise?]", buffer(0x20, 1):uint()))
 	local channel = buffer(0x21, 1):uint()
 	subtree:add(buffer(0x21, 1), string.format("Channel: x%02x", channel))
 
